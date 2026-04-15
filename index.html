@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMART POWER TECH - النهائي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { cairo: ['Cairo', 'sans-serif'] },
+                    colors: {
+                        brand: { dark:'#050a14', card:'#0f172a', border:'#1e293b', accent:'#38bdf8', gold:'#fbbf24', green:'#34d399', red:'#f87171' },
+                        p2: { accent:'#00d4ff', green:'#00e68a', blue:'#0088ff', gold:'#ffd700', muted:'#8899aa', light:'#c8d6e5', border:'#1e2d3d', voda:'#e60000', orange:'#f97316', deeper:'#060b14', pcard:'#111827' }
+                    }
+                }
+            }
+    </script>
+    <style>
+        body{font-family:'Cairo',sans-serif;background:#050a14;color:#cbd5e1}
+        .glass-panel{background:rgba(15,23,42,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08);border-radius:16px;box-shadow:0 4px 30px rgba(0,0,0,.3)}
+        .btn{padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;transition:all .3s;border:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:'Cairo',sans-serif}
+        .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(37,99,235,.3)}
+        .btn-gold{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}.btn-red{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
+        .btn-ghost{background:transparent;color:#94a3b8;border:1px solid #334155}.btn-ghost:hover{background:#1e293b;color:#fff}
+        .btn-orange{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff}.btn-orange:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(249,115,22,.3)}
+        .input-field{width:100%;background:#0f172a;border:1px solid #334155;color:#fff;padding:12px;border-radius:8px;outline:none;transition:.3s;margin-bottom:12px;font-family:'Cairo',sans-serif}
+        .input-field:focus{border-color:#38bdf8;box-shadow:0 0 0 2px rgba(56,189,248,.2)}
+        .section-view{display:none}.section-view.active{display:block}
+        .badge{padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:700}
+        .badge-pending{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+        .badge-paid{background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.3)}
+        .badge-active{background:rgba(52,211,153,.15);color:#34d399;border:1px solid rgba(52,211,153,.3)}
+        .badge-expired{background:rgba(248,113,113,.15);color:#f87171;border:1px solid rgba(248,113,113,.3)}
+        .badge-suspended{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(5px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+        .modal-overlay.open{display:flex}.modal-content{background:#1e293b;border:1px solid #334155;width:100%;max-width:500px;border-radius:16px;padding:25px;position:relative}
+        .toast-container{position:fixed;top:20px;left:20px;z-index:2000;display:flex;flex-direction:column;gap:10px}
+        .toast{background:#1e293b;border-right:4px solid #38bdf8;padding:16px 20px;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.4);animation:slideInLeft .3s ease-out;min-width:300px}
+        .toast.success{border-right-color:#34d399}.toast.error{border-right-color:#f87171}
+        @keyframes slideInLeft{from{transform:translateX(-100%);opacity:0}to{transform:translateX(0);opacity:1}}
+        .logo-img{height:42px;width:auto;object-fit:contain;filter:brightness(1.05)}
+        .offer-card{cursor:pointer;transition:all .4s}.offer-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+        .stat-card{position:relative;overflow:hidden}
+        .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(56,189,248,.3),transparent)}
+        .stat-number{font-size:1.75rem;font-weight:900;line-height:1}
+        .stat-label{font-size:.7rem;color:#ffffff;font-weight:600;margin-top:2px}
+        .stat-icon-bg{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+    </style>
+</head>
+<body>
+    <div id="toast-container" class="toast-container"></div>
+
+    <header class="sticky top-0 z-50 glass-panel border-b border-brand-border mb-6 mx-4 mt-4 rounded-xl">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="goHome()">
+                <img src="https://z-cdn-media.chatglm.cn/files/d0f0193f-420c-4681-82c5-9c00ad166772.png?auth_key=1876205571-bdf5497c924a41ba81bf7bbd28e829de-0-bc47ff48c5d8975c03c0bce5babfaa98" alt="Logo" class="logo-img">
+                <div><h1 class="text-base font-extrabold text-white">SMART POWER TECH</h1><p class="text-[11px] text-white font-medium">النظام النهائي - إصدار 2.0</p></div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="openCheckWarranty()" class="btn btn-ghost text-sm"><iconify-icon icon="solar:shield-check-bold"></iconify-icon><span class="hidden sm:inline">التحقق من الضمان</span></button>
+                <button onclick="openAdminLogin()" class="btn btn-ghost text-xs text-slate-500"><iconify-icon icon="solar:settings-bold"></iconify-icon></button>
+            </div>
+        </div>
+    </header>
+
+    <div id="view-home" class="section-view active max-w-7xl mx-auto px-4 pb-20">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="glass-panel stat-card p-4 flex items-center gap-3">
+                <div class="stat-icon-bg bg-blue-500/15"><iconify-icon icon="solar:fire-bold" class="text-xl text-blue-400"></iconify-icon></div>
+                <div><div class="stat-number text-brand-accent" id="stat-offers">0</div><div class="stat-label">عروض نشطة</div></div>
+            </div>
+            <div class="glass-panel stat-card p-4 flex items-center gap-3">
+                <div class="stat-icon-bg bg-green-500/15"><iconify-icon icon="solar:shield-check-bold" class="text-xl text-green-400"></iconify-icon></div>
+                <div><div class="stat-number text-brand-green" id="stat-warranties">0</div><div class="stat-label">ضمانات نشطة</div></div>
+            </div>
+            <div class="glass-panel stat-card p-4 flex items-center gap-3">
+                <div class="stat-icon-bg bg-yellow-500/15"><iconify-icon icon="solar:document-add-bold" class="text-xl text-yellow-400"></iconify-icon></div>
+                <div><div class="stat-number text-brand-gold" id="stat-orders">0</div><div class="stat-label">طلبات جديدة</div></div>
+            </div>
+            <div class="glass-panel stat-card p-4 flex items-center gap-3">
+                <div class="stat-icon-bg bg-purple-500/15"><iconify-icon icon="solar:users-group-rounded-bold" class="text-xl text-purple-400"></iconify-icon></div>
+                <div><div class="stat-number text-purple-400" id="stat-customers">0</div><div class="stat-label">عملاء سعداء</div></div>
+            </div>
+        </div>
+
+        <div id="offers-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        
+        <div class="mt-16 glass-panel p-8 text-center max-w-2xl mx-auto relative overflow-hidden">
+            <iconify-icon icon="solar:search-bold" class="text-4xl text-brand-accent mb-3 inline-block"></iconify-icon>
+            <h2 class="text-2xl font-bold text-white mb-2">الاستعلام عن الضمان</h2>
+            <p class="text-slate-400 mb-6 text-sm">أدخل الكود الموجود على بطاقتك لمعرفة الحالة الفورية.</p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <input type="text" id="check-input" class="input-field text-center text-xl font-mono max-w-xs" placeholder="SP-XXXXX" maxlength="15">
+                <button onclick="checkWarranty()" class="btn btn-primary w-full sm:w-auto"><iconify-icon icon="solar:magnifer-bold"></iconify-icon> بحث</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-admin" class="section-view max-w-7xl mx-auto px-4 pb-20">
+        <div class="glass-panel p-6 mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3"><img src="https://z-cdn-media.chatglm.cn/files/d0f0193f-420c-4681-82c5-9c00ad166772.png?auth_key=1876205571-bdf5497c924a41ba81bf7bbd28e829de-0-bc47ff48c5d8975c03c0bce5babfaa98" alt="Logo" class="logo-img"><div><h2 class="text-2xl font-bold text-white"><iconify-icon icon="solar:dashboard-bold"></iconify-icon> لوحة التحكم</h2><p class="text-slate-400 text-sm">إدارة متكاملة للطلبات والضمانات</p></div></div>
+            <div class="flex gap-2"><button onclick="goHome()" class="btn btn-ghost"><iconify-icon icon="solar:home-smile-bold"></iconify-icon> العودة</button><button onclick="logoutAdmin()" class="btn btn-red">خروج</button></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="glass-panel p-4"><div class="text-center"><p class="text-slate-400 text-sm">حجم قاعدة البيانات</p><p class="text-2xl font-bold text-white" id="sys-db-size">...</p></div></div>
+            <div class="glass-panel p-4"><div class="text-center"><p class="text-slate-400 text-sm">آخر نسخة</p><p class="text-sm text-yellow-400" id="sys-last-backup">يدوياً</p></div></div>
+            <div class="glass-panel p-4"><button onclick="downloadBackup()" class="btn btn-primary w-full"><iconify-icon icon="solar:download-minimalistic-bold"></iconify-icon> تحميل نسخة احتياطية</button></div>
+            <div class="glass-panel p-4"><button onclick="resetSystem()" class="btn btn-red w-full"><iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon> تهيئة النظام</button></div>
+        </div>
+
+        <div class="glass-panel overflow-hidden mb-6">
+            <div class="overflow-x-auto">
+                <table class="w-full text-right">
+                    <thead class="bg-slate-800/50 text-slate-300">
+                        <tr><th class="p-4">الكود</th><th class="p-4">العميل</th><th class="p-4">المنتج</th><th class="p-4">التاريخ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th></tr>
+                    </thead>
+                    <tbody id="orders-list" class="text-sm"></tbody>
+                </table>
+            </div>
+            <div id="no-orders-msg" class="p-8 text-center text-slate-500 hidden">لا توجد طلبات.</div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-login" class="modal-overlay">
+        <div class="modal-content text-center">
+            <h3 class="text-xl font-bold text-white mb-4">دخول الإدارة</h3>
+            <input type="password" id="admin-pass" class="input-field text-center text-2xl tracking-widest mb-4" placeholder="كلمة المرور الافتراضية: 1234">
+            <div class="flex gap-2 justify-center">
+                <button onclick="attemptLogin()" class="btn btn-primary flex-1">دخول</button>
+                <button onclick="closeModal('modal-login')" class="btn btn-ghost">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-success" class="modal-overlay">
+        <div class="modal-content text-center">
+            <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-green-400 text-4xl">✓</div>
+            <h3 class="text-2xl font-bold text-white mb-2">تم استلام طلبك!</h3>
+            <p class="text-slate-400 mb-4">تم حفظ البيانات على السيرفر بنجاح.</p>
+            <div class="bg-slate-800/50 p-4 rounded-lg mb-4">
+                <p class="text-sm text-slate-400 mb-1">كود الطلب:</p>
+                <p class="text-3xl font-mono font-bold text-cyan-400" id="success-code"></p>
+            </div>
+            <button onclick="closeModal('modal-success');goHome()" class="btn btn-primary w-full">حسناً</button>
+        </div>
+    </div>
+
+    <div id="modal-warranty" class="modal-overlay">
+        <div class="modal-content text-center">
+            <div id="warranty-result-content"></div>
+            <button onclick="closeModal('modal-warranty')" class="btn btn-ghost mt-6 w-full">إغلاق</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin + '/api'; // لاستخدام الدومين الحالي تلقائياً
+
+        // Helper Functions
+        const $ = (sel) => document.querySelector(sel);
+        function sanitize(s){ if(!s) return ''; var d = document.createElement('div'); d.textContent = s; return d.innerHTML }
+        function showToast(m, t){ t=t||'info'; var c=$('#toast-container'), e=document.createElement('div'); e.className='toast '+(t==='success'?'success':t==='error'?'error':''); e.innerHTML='<span class="text-white font-medium">'+sanitize(m)+'</span>'; c.appendChild(e); setTimeout(()=>{e.remove()},3500) }
+        function formatDate(ts){ return new Date(ts).toLocaleDateString('ar-EG') }
+        function generateCode(){ return 'SP-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).substring(2,5).toUpperCase() }
+
+        // API Interactions
+        async function fetchOffers() {
+            try {
+                const res = await fetch(API_URL + '/offers');
+                const offers = await res.json();
+                renderOffers(offers);
+            } catch (err) {
+                showToast('خطأ في الاتصال بالسيرفر. تأكد من تشغيله.', 'error');
+            }
+        }
+
+        async function fetchOrders() {
+            try {
+                const res = await fetch(API_URL + '/orders');
+                if(res.status === 401) { logoutAdmin(); return; }
+                const orders = await res.json();
+                renderOrders(orders);
+                updateStats(orders);
+            } catch (err) { console.error(err); }
+        }
+
+        async function placeOrder(offerId) {
+            const titleEl = document.getElementById('offer-title-' + offerId);
+            const offerTitle = titleEl ? titleEl.textContent : 'منتج';
+            const priceEl = document.getElementById('offer-price-' + offerId);
+            const price = priceEl ? parseFloat(priceEl.textContent) : 0;
+            
+            const name = prompt('الاسم الثلاثي:');
+            const addr = prompt('العنوان التفصيلي:');
+            const phone = prompt('رقم الهاتف:');
+            
+            if(!name || !addr) return showToast('البيانات ناقصة', 'error');
+
+            const code = generateCode();
+
+            try {
+                const res = await fetch(API_URL + '/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code: code,
+                        customerName: name,
+                        address: addr,
+                        phone: phone,
+                        offerId: offerId,
+                        offerTitle: offerTitle,
+                        price: price
+                    })
+                });
+                
+                if(res.ok) {
+                    $('#success-code').textContent = code;
+                    openModal('modal-success');
+                } else {
+                    showToast('حدث خطأ أثناء حفظ الطلب', 'error');
+                }
+            } catch (err) {
+                showToast('فشل الاتصال بالسيرفر', 'error');
+            }
+        }
+
+        async function checkWarranty() {
+            const code = $('#check-input').value.trim();
+            if(!code) return showToast('أدخل الكود', 'error');
+
+            try {
+                const res = await fetch(API_URL + '/warranty/' + code);
+                if(res.status === 404) {
+                    showToast('الكود غير موجود', 'error');
+                    $('#warranty-result-content').innerHTML = '<p class="text-red-400">غير موجود في السجلات</p>';
+                } else {
+                    const order = await res.json();
+                    showWarrantyResult(order);
+                }
+            } catch (err) {
+                showToast('خطأ في البحث', 'error');
+            }
+        }
+
+        async function updateOrderStatus(id, status) {
+            if(!confirm('تأكيد تغيير الحالة؟')) return;
+            try {
+                const res = await fetch(API_URL + '/orders/' + id + '/status', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status }) // السيرفر سيحدد مدة الضمان لوكانت active
+                });
+                if(res.ok) {
+                    showToast('تم تحديث الحالة', 'success');
+                    fetchOrders();
+                }
+            } catch (err) { showToast('فشل التحديث', 'error'); }
+        }
+
+        async function suspendWarranty(id) {
+            const reason = prompt('سبب إيقاف الضمان:');
+            if(!reason) return;
+            try {
+                const res = await fetch(API_URL + '/orders/' + id + '/suspend', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ reason })
+                });
+                if(res.ok) { fetchOrders(); showToast('تم الإيقاف', 'success'); }
+            } catch (err) { showToast('فشل العملية', 'error'); }
+        }
+
+        async function reactivateWarranty(id) {
+            try {
+                const res = await fetch(API_URL + '/orders/' + id + '/reactivate', { method: 'PUT' });
+                if(res.ok) { fetchOrders(); showToast('تم إعادة التفعيل', 'success'); }
+            } catch (err) { showToast('فشل العملية', 'error'); }
+        }
+
+        async function downloadBackup() {
+            try {
+                const res = await fetch(API_URL + '/backup/download');
+                if(res.ok) {
+                    const blob = await res.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `smart_power_backup_${new Date().toISOString().split('T')[0]}.db`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    showToast('تم تحميل النسخة الاحتياطية', 'success');
+                }
+            } catch(err) { showToast('فشل التحميل', 'error'); }
+        }
+
+        // UI Logic
+        function renderOffers(offers) {
+            const grid = $('#offers-grid');
+            grid.innerHTML = '';
+            
+            const themes = {
+                blue: 'bg-blue-600',
+                orange: 'bg-orange-500',
+                gold: 'bg-yellow-500'
+            };
+
+            offers.forEach(o => {
+                const themeColor = themes[o.theme] || 'bg-gray-600';
+                const card = document.createElement('div');
+                card.className = 'glass-panel overflow-hidden offer-card';
+                card.innerHTML = `
+                    <div class="relative h-48 bg-slate-800">
+                        <img src="${o.image}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x400'">
+                        <div class="absolute bottom-4 right-4 bg-black/60 px-4 py-2 rounded-lg text-white font-bold text-xl" id="offer-price-${o.id}">${o.price} ج.م</div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-white mb-2" id="offer-title-${o.id}">${o.title}</h3>
+                        <p class="text-slate-400 text-sm mb-4 line-clamp-2">${o.description}</p>
+                        <button onclick="placeOrder(${o.id})" class="w-full btn ${themeColor} text-white">طلب المنتج</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            $('#stat-offers').textContent = offers.length;
+        }
+
+        function renderOrders(orders) {
+            const list = $('#orders-list');
+            list.innerHTML = '';
+            
+            if(orders.length === 0) { $('#no-orders-msg').classList.remove('hidden'); return; } 
+            else { $('#no-orders-msg').classList.add('hidden'); }
+
+            orders.forEach(o => {
+                let badgeClass = 'badge-pending'; let statusText = 'انتظار';
+                if(o.status === 'paid') { badgeClass = 'badge-paid'; statusText = 'تم الدفع'; }
+                if(o.status === 'active') { badgeClass = 'badge-active'; statusText = 'نشط'; }
+                if(o.status === 'expired') { badgeClass = 'badge-expired'; statusText = 'منتهي'; }
+                if(o.status === 'suspended') { badgeClass = 'badge-suspended'; statusText = 'موقوف'; }
+
+                const tr = document.createElement('tr');
+                tr.className = 'border-b border-slate-800 hover:bg-slate-800/30';
+                tr.innerHTML = `
+                    <td class="p-4 font-mono text-cyan-400 font-bold">${o.code}</td>
+                    <td class="p-4"><div class="font-bold text-white">${sanitize(o.customerName)}</div><div class="text-xs text-slate-500">${sanitize(o.address)}</div></td>
+                    <td class="p-4 text-slate-300 text-xs">${sanitize(o.offerTitle)}</td>
+                    <td class="p-4 text-slate-400 text-xs">${formatDate(o.date)}</td>
+                    <td class="p-4"><span class="badge ${badgeClass}">${statusText}</span></td>
+                    <td class="p-4 flex gap-1">
+                        ${o.status === 'paid' ? `<button onclick="updateOrderStatus(${o.id}, 'active')" class="btn btn-primary text-xs py-1 px-2">تفعيل</button>` : ''}
+                        ${o.status === 'active' ? `<button onclick="suspendWarranty(${o.id})" class="btn btn-red text-xs py-1 px-2">إيقاف</button>` : ''}
+                        ${o.status === 'suspended' ? `<button onclick="reactivateWarranty(${o.id})" class="btn btn-gold text-xs py-1 px-2">تفعيل</button>` : ''}
+                    </td>
+                `;
+                list.appendChild(tr);
+            });
+        }
+
+        function showWarrantyResult(o) {
+            const content = $('#warranty-result-content');
+            let statusHtml = '';
+            if(o.status === 'active') statusHtml = '<div class="bg-green-500/10 p-4 rounded-lg text-green-400">الضمان ساري المفعول</div>';
+            else if(o.status === 'suspended') statusHtml = '<div class="bg-red-500/10 p-4 rounded-lg text-red-400">الضمان موقوف</div>';
+            else statusHtml = '<div class="bg-yellow-500/10 p-4 rounded-lg text-yellow-400">الحالة الحالية: ' + o.status + '</div>';
+
+            content.innerHTML = `
+                <div class="mb-4">
+                    <h2 class="text-2xl font-bold text-white mb-2">${sanitize(o.offerTitle)}</h2>
+                    <div class="text-3xl font-mono text-cyan-400 font-bold bg-slate-800/50 p-3 rounded-lg">${o.code}</div>
+                </div>
+                <div class="mb-4 text-right">
+                    <p class="text-slate-400">العميل:</p>
+                    <p class="text-white font-bold">${sanitize(o.customerName)}</p>
+                </div>
+                ${statusHtml}
+            `;
+            openModal('modal-warranty');
+        }
+
+        function updateStats(orders) {
+            const active = orders.filter(o => o.status === 'active').length;
+            const pending = orders.filter(o => o.status === 'pending' || o.status === 'paid').length;
+            $('#stat-warranties').textContent = active;
+            $('#stat-orders').textContent = pending;
+            $('#stat-customers').textContent = orders.length;
+        }
+
+        function goHome() { $('.section-view').classList.remove('active'); $('#view-home').classList.add('active'); fetchOffers(); }
+        function openAdminLogin() { openModal('modal-login'); }
+        function openCheckWarranty() { $('#check-input').focus(); $('#check-input').scrollIntoView({behavior:'smooth',block:'center'}); }
+        
+        function logoutAdmin() {
+            // مسح الكوكي من المتصفح (العملية الوحيدة في الواجهة الأمامية)
+            document.cookie = "admin_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            goHome();
+            showToast('تم تسجيل الخروج', 'info');
+        }
+
+        function openModal(id) { $('#'+id).classList.add('open'); }
+        function closeModal(id) { $('#'+id).classList.remove('open'); }
+
+        async function attemptLogin() {
+            const pass = $('#admin-pass').value;
+            try {
+                const res = await fetch(API_URL + '/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pass })
+                });
+                const data = await res.json();
+                
+                if(data.success) {
+                    closeModal('modal-login');
+                    $('.section-view').classList.remove('active');
+                    $('#view-admin').classList.add('active');
+                    fetchOrders();
+                    fetchSystemInfo();
+                } else {
+                    showToast('كلمة المرور خاطئة', 'error');
+                }
+            } catch (err) { showToast('خطأ في الدخول', 'error'); }
+        }
+
+        async function fetchSystemInfo() {
+            try {
+                const res = await fetch(API_URL + '/system/info');
+                if(res.ok) {
+                    const info = await res.json();
+                    $('#sys-db-size').textContent = info.size;
+                }
+            } catch(e) {}
+        }
+
+        function resetSystem() {
+            if(confirm('تحذير: سيتم مسح جميع البيانات والطلبات! هل أنت متأكد تماماً؟')) {
+                // في هذا الإصدار، لا نسمح بحذف قاعدة البيانات من المتصفح للسلامة
+                // المستخدم يجب أن يحذف ملف .db يدوياً من المجلد
+                alert('للأمان النظام، يرجى إيقاف السيرفر وحذف ملف "smart_power.db" يدوياً، ثم إعادة التشغيل.');
+            }
+        }
+
+        // Init
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchOffers();
+        });
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape') $('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+        });
+    </script>
+</body>
+</html>
