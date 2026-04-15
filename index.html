@@ -18,6 +18,7 @@
                     }
                 }
             }
+        }
     </script>
     <style>
         body{font-family:'Cairo',sans-serif;background:#050a14;color:#cbd5e1}
@@ -58,7 +59,7 @@
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer" onclick="goHome()">
                 <img src="https://z-cdn-media.chatglm.cn/files/d0f0193f-420c-4681-82c5-9c00ad166772.png?auth_key=1876205571-bdf5497c924a41ba81bf7bbd28e829de-0-bc47ff48c5d8975c03c0bce5babfaa98" alt="Logo" class="logo-img">
-                <div><h1 class="text-base font-extrabold text-white">SMART POWER TECH</h1><p class="text-[11px] text-white font-medium">النظام النهائي - إصدار 2.0</p></div>
+                <div><h1 class="text-base font-extrabold text-white">SMART POWER TECH</h1><p class="text-[11px] text-white font-medium">النظام النهائي (PostgreSQL)</p></div>
             </div>
             <div class="flex gap-2">
                 <button onclick="openCheckWarranty()" class="btn btn-ghost text-sm"><iconify-icon icon="solar:shield-check-bold"></iconify-icon><span class="hidden sm:inline">التحقق من الضمان</span></button>
@@ -92,7 +93,7 @@
         <div class="mt-16 glass-panel p-8 text-center max-w-2xl mx-auto relative overflow-hidden">
             <iconify-icon icon="solar:search-bold" class="text-4xl text-brand-accent mb-3 inline-block"></iconify-icon>
             <h2 class="text-2xl font-bold text-white mb-2">الاستعلام عن الضمان</h2>
-            <p class="text-slate-400 mb-6 text-sm">أدخل الكود الموجود على بطاقتك لمعرفة الحالة الفورية.</p>
+            <p class="text-slate-400 mb-6 text-sm">أدخل الكود الموجود على بطاقتك لمعرفة الحالة الفورية من السيرفر.</p>
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
                 <input type="text" id="check-input" class="input-field text-center text-xl font-mono max-w-xs" placeholder="SP-XXXXX" maxlength="15">
                 <button onclick="checkWarranty()" class="btn btn-primary w-full sm:w-auto"><iconify-icon icon="solar:magnifer-bold"></iconify-icon> بحث</button>
@@ -102,17 +103,10 @@
 
     <div id="view-admin" class="section-view max-w-7xl mx-auto px-4 pb-20">
         <div class="glass-panel p-6 mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3"><img src="https://z-cdn-media.chatglm.cn/files/d0f0193f-420c-4681-82c5-9c00ad166772.png?auth_key=1876205571-bdf5497c924a41ba81bf7bbd28e829de-0-bc47ff48c5d8975c03c0bce5babfaa98" alt="Logo" class="logo-img"><div><h2 class="text-2xl font-bold text-white"><iconify-icon icon="solar:dashboard-bold"></iconify-icon> لوحة التحكم</h2><p class="text-slate-400 text-sm">إدارة متكاملة للطلبات والضمانات</p></div></div>
+            <div class="flex items-center gap-3"><img src="https://z-cdn-media.chatglm.cn/files/d0f0193f-420c-4681-82c5-9c00ad166772.png?auth_key=1876205571-bdf5497c924a41ba81bf7bbd28e829de-0-bc47ff48c5d8975c03c0bce5babfaa98" alt="Logo" class="logo-img"><div><h2 class="text-2xl font-bold text-white"><iconify-icon icon="solar:dashboard-bold"></iconify-icon> لوحة التحكم</h2><p class="text-slate-400 text-sm">إدارة متكاملة للطلبات والضمانات (Cloud)</p></div></div>
             <div class="flex gap-2"><button onclick="goHome()" class="btn btn-ghost"><iconify-icon icon="solar:home-smile-bold"></iconify-icon> العودة</button><button onclick="logoutAdmin()" class="btn btn-red">خروج</button></div>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div class="glass-panel p-4"><div class="text-center"><p class="text-slate-400 text-sm">حجم قاعدة البيانات</p><p class="text-2xl font-bold text-white" id="sys-db-size">...</p></div></div>
-            <div class="glass-panel p-4"><div class="text-center"><p class="text-slate-400 text-sm">آخر نسخة</p><p class="text-sm text-yellow-400" id="sys-last-backup">يدوياً</p></div></div>
-            <div class="glass-panel p-4"><button onclick="downloadBackup()" class="btn btn-primary w-full"><iconify-icon icon="solar:download-minimalistic-bold"></iconify-icon> تحميل نسخة احتياطية</button></div>
-            <div class="glass-panel p-4"><button onclick="resetSystem()" class="btn btn-red w-full"><iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon> تهيئة النظام</button></div>
-        </div>
-
         <div class="glass-panel overflow-hidden mb-6">
             <div class="overflow-x-auto">
                 <table class="w-full text-right">
@@ -142,7 +136,7 @@
         <div class="modal-content text-center">
             <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-green-400 text-4xl">✓</div>
             <h3 class="text-2xl font-bold text-white mb-2">تم استلام طلبك!</h3>
-            <p class="text-slate-400 mb-4">تم حفظ البيانات على السيرفر بنجاح.</p>
+            <p class="text-slate-400 mb-4">تم حفظ البيانات على السيرفر السحابي بنجاح.</p>
             <div class="bg-slate-800/50 p-4 rounded-lg mb-4">
                 <p class="text-sm text-slate-400 mb-1">كود الطلب:</p>
                 <p class="text-3xl font-mono font-bold text-cyan-400" id="success-code"></p>
@@ -159,7 +153,7 @@
     </div>
 
     <script>
-        const API_URL = window.location.origin + '/api'; // لاستخدام الدومين الحالي تلقائياً
+        const API_URL = window.location.origin + '/api';
 
         // Helper Functions
         const $ = (sel) => document.querySelector(sel);
@@ -175,7 +169,7 @@
                 const offers = await res.json();
                 renderOffers(offers);
             } catch (err) {
-                showToast('خطأ في الاتصال بالسيرفر. تأكد من تشغيله.', 'error');
+                showToast('خطأ في الاتصال بالسيرفر', 'error');
             }
         }
 
@@ -282,23 +276,6 @@
             } catch (err) { showToast('فشل العملية', 'error'); }
         }
 
-        async function downloadBackup() {
-            try {
-                const res = await fetch(API_URL + '/backup/download');
-                if(res.ok) {
-                    const blob = await res.blob();
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `smart_power_backup_${new Date().toISOString().split('T')[0]}.db`;
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    showToast('تم تحميل النسخة الاحتياطية', 'success');
-                }
-            } catch(err) { showToast('فشل التحميل', 'error'); }
-        }
-
         // UI Logic
         function renderOffers(offers) {
             const grid = $('#offers-grid');
@@ -349,7 +326,10 @@
                 tr.className = 'border-b border-slate-800 hover:bg-slate-800/30';
                 tr.innerHTML = `
                     <td class="p-4 font-mono text-cyan-400 font-bold">${o.code}</td>
-                    <td class="p-4"><div class="font-bold text-white">${sanitize(o.customerName)}</div><div class="text-xs text-slate-500">${sanitize(o.address)}</div></td>
+                    <td class="p-4">
+                        <div class="font-bold text-white">${sanitize(o.customerName)}</div>
+                        <div class="text-xs text-slate-500">${sanitize(o.address)}</div>
+                    </td>
                     <td class="p-4 text-slate-300 text-xs">${sanitize(o.offerTitle)}</td>
                     <td class="p-4 text-slate-400 text-xs">${formatDate(o.date)}</td>
                     <td class="p-4"><span class="badge ${badgeClass}">${statusText}</span></td>
@@ -365,12 +345,7 @@
 
         function showWarrantyResult(o) {
             const content = $('#warranty-result-content');
-            let statusHtml = '';
-            if(o.status === 'active') statusHtml = '<div class="bg-green-500/10 p-4 rounded-lg text-green-400">الضمان ساري المفعول</div>';
-            else if(o.status === 'suspended') statusHtml = '<div class="bg-red-500/10 p-4 rounded-lg text-red-400">الضمان موقوف</div>';
-            else statusHtml = '<div class="bg-yellow-500/10 p-4 rounded-lg text-yellow-400">الحالة الحالية: ' + o.status + '</div>';
-
-            content.innerHTML = `
+            let html = `
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold text-white mb-2">${sanitize(o.offerTitle)}</h2>
                     <div class="text-3xl font-mono text-cyan-400 font-bold bg-slate-800/50 p-3 rounded-lg">${o.code}</div>
@@ -379,30 +354,39 @@
                     <p class="text-slate-400">العميل:</p>
                     <p class="text-white font-bold">${sanitize(o.customerName)}</p>
                 </div>
-                ${statusHtml}
             `;
+
+            if(o.status === 'active') {
+                html += `<div class="bg-green-500/10 p-4 rounded-lg text-green-400">الضمان نشط ومفعل</div>`;
+            } else if (o.status === 'suspended') {
+                html += `<div class="bg-red-500/10 p-4 rounded-lg text-red-400">الضمان موقوف</div>`;
+            } else {
+                html += `<div class="bg-yellow-500/10 p-4 rounded-lg text-yellow-400">الحالة الحالية: ${o.status}</div>`;
+            }
+
+            content.innerHTML = html;
             openModal('modal-warranty');
         }
 
         function updateStats(orders) {
             const active = orders.filter(o => o.status === 'active').length;
             const pending = orders.filter(o => o.status === 'pending' || o.status === 'paid').length;
+            
             $('#stat-warranties').textContent = active;
             $('#stat-orders').textContent = pending;
             $('#stat-customers').textContent = orders.length;
         }
 
+        // Navigation
         function goHome() { $('.section-view').classList.remove('active'); $('#view-home').classList.add('active'); fetchOffers(); }
         function openAdminLogin() { openModal('modal-login'); }
         function openCheckWarranty() { $('#check-input').focus(); $('#check-input').scrollIntoView({behavior:'smooth',block:'center'}); }
-        
         function logoutAdmin() {
-            // مسح الكوكي من المتصفح (العملية الوحيدة في الواجهة الأمامية)
             document.cookie = "admin_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             goHome();
-            showToast('تم تسجيل الخروج', 'info');
         }
 
+        // Modals
         function openModal(id) { $('#'+id).classList.add('open'); }
         function closeModal(id) { $('#'+id).classList.remove('open'); }
 
@@ -421,29 +405,10 @@
                     $('.section-view').classList.remove('active');
                     $('#view-admin').classList.add('active');
                     fetchOrders();
-                    fetchSystemInfo();
                 } else {
                     showToast('كلمة المرور خاطئة', 'error');
                 }
             } catch (err) { showToast('خطأ في الدخول', 'error'); }
-        }
-
-        async function fetchSystemInfo() {
-            try {
-                const res = await fetch(API_URL + '/system/info');
-                if(res.ok) {
-                    const info = await res.json();
-                    $('#sys-db-size').textContent = info.size;
-                }
-            } catch(e) {}
-        }
-
-        function resetSystem() {
-            if(confirm('تحذير: سيتم مسح جميع البيانات والطلبات! هل أنت متأكد تماماً؟')) {
-                // في هذا الإصدار، لا نسمح بحذف قاعدة البيانات من المتصفح للسلامة
-                // المستخدم يجب أن يحذف ملف .db يدوياً من المجلد
-                alert('للأمان النظام، يرجى إيقاف السيرفر وحذف ملف "smart_power.db" يدوياً، ثم إعادة التشغيل.');
-            }
         }
 
         // Init
